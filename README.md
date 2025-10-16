@@ -144,7 +144,7 @@ Compatible con: Netlify, Railway, Heroku, DigitalOcean, AWS Amplify
 ## 📞 Contacto
 
 **Jackson** - Frontend Developer  
-📧 jackson.dev@example.com  
+📧 michael.negrete16@gmail.com
 🌍 Colombia  
 💼 Especialista en Next.js / React
 
