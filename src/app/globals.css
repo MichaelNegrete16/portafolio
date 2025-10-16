@@ -1,33 +1,103 @@
+/* Variables globales para la paleta JDM Cyberpunk Elegante */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Colores principales - Paleta más sofisticada */
+  --bg-asphalt: #0a0a0a;
+  --bg-dark: #111111;
+  --bg-card: #1a1a1a;
+  --electric-purple: #8b5cf6;
+  --bright-cyan: #00d4ff;
+
+  /* Colores de acento más elegantes */
+  --neon-blue: #00d4ff;
+  --neon-red: #ff3f3f;
+  /* Azul neón suave */
+  --electric-violet: #8b5cf6;
+  /* Violeta elegante */
+  --sunset-orange: #ff6b35;
+  /* Naranja sunset */
+  --mint-green: #10b981;
+  /* Verde menta */
+  --pure-white: #ffffff;
+  --text-gray: #a1a1aa;
+  /* Gris para textos secundarios */
+
+  /* Colores de estado */
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --error: #ef4444;
+
+  /* Gradientes más suaves */
+  --gradient-primary: linear-gradient(135deg, var(--neon-blue), var(--electric-violet));
+  --gradient-secondary: linear-gradient(135deg, var(--electric-violet), var(--sunset-orange));
+  --gradient-accent: linear-gradient(135deg, var(--mint-green), var(--neon-blue));
+  --gradient-tokyo: linear-gradient(180deg, rgba(139, 92, 246, 0.05), rgba(0, 212, 255, 0.05));
+  --gradient-card: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+
+  /* Sombras y efectos más sutiles */
+  --neon-glow-blue: 0 0 20px rgba(0, 212, 255, 0.4), 0 0 40px rgba(0, 212, 255, 0.2);
+  --neon-glow-violet: 0 0 20px rgba(139, 92, 246, 0.4), 0 0 40px rgba(139, 92, 246, 0.2);
+  --neon-glow-orange: 0 0 20px rgba(255, 107, 53, 0.4), 0 0 40px rgba(255, 107, 53, 0.2);
+  --neon-glow-green: 0 0 20px rgba(16, 185, 129, 0.4), 0 0 40px rgba(16, 185, 129, 0.2);
+
+  /* Sombras para cards */
+  --shadow-light: 0 2px 20px rgba(0, 0, 0, 0.3);
+  --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.4);
+  --shadow-heavy: 0 15px 50px rgba(0, 0, 0, 0.6);
+
+  /* Tipografía */
+  --font-arcade: var(--font-press-start), 'Courier New', monospace;
+  --font-tech: var(--font-orbitron), 'Arial', sans-serif;
+
+  /* Transiciones */
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-glow: all 0.5s ease-in-out;
+  --transition-fast: all 0.2s ease-out;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Reset y configuración base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-html,
-body {
+html {
+  scroll-behavior: smooth;
   max-width: 100vw;
   overflow-x: hidden;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--pure-white);
+  font-family: var(--font-tech);
+  line-height: 1.6;
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  position: relative;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 30%, rgba(255, 107, 53, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 40% 70%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+    linear-gradient(135deg, rgba(10, 10, 10, 0.95) 0%, rgba(26, 26, 26, 0.8) 100%);
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+/* Líneas cyber como pseudo-elemento del body */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    linear-gradient(rgba(0, 212, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 212, 255, 0.08) 1px, transparent 1px);
+  background-size: 60px 60px;
+  opacity: 0.4;
+  z-index: -1;
+  pointer-events: none;
 }
 
 a {
@@ -35,8 +105,525 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+/* Tipografía arcade para títulos */
+.arcade-text {
+  font-family: var(--font-arcade);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.tech-text {
+  font-family: var(--font-tech);
+  font-weight: 400;
+}
+
+/* Efectos de neón actualizados */
+.neon-text {
+  color: var(--neon-blue);
+  text-shadow: var(--neon-glow-blue);
+  animation: neon-flicker 3s infinite alternate;
+}
+
+.neon-text-violet {
+  color: var(--electric-violet);
+  text-shadow: var(--neon-glow-violet);
+}
+
+.neon-text-orange {
+  color: var(--sunset-orange);
+  text-shadow: var(--neon-glow-orange);
+}
+
+.neon-text-green {
+  color: var(--mint-green);
+  text-shadow: var(--neon-glow-green);
+}
+
+/* Mantener compatibilidad con nombres antiguos */
+.neon-text-red {
+  color: var(--sunset-orange);
+  text-shadow: var(--neon-glow-orange);
+}
+
+.neon-text-purple {
+  color: var(--electric-violet);
+  text-shadow: var(--neon-glow-violet);
+}
+
+/* Animaciones de parpadeo neón actualizadas */
+@keyframes neon-flicker {
+
+  0%,
+  100% {
+    text-shadow: var(--neon-glow-blue);
+  }
+
+  50% {
+    text-shadow: var(--neon-glow-blue), 0 0 60px rgba(0, 212, 255, 0.6);
+  }
+}
+
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    box-shadow: var(--neon-glow-violet);
+  }
+
+  50% {
+    box-shadow: var(--neon-glow-violet), 0 0 60px rgba(139, 92, 246, 0.6);
+  }
+}
+
+@keyframes pulse-glow-orange {
+
+  0%,
+  100% {
+    box-shadow: var(--neon-glow-orange);
+  }
+
+  50% {
+    box-shadow: var(--neon-glow-orange), 0 0 60px rgba(255, 107, 53, 0.6);
+  }
+}
+
+@keyframes pulse-glow-green {
+
+  0%,
+  100% {
+    box-shadow: var(--neon-glow-green);
+  }
+
+  50% {
+    box-shadow: var(--neon-glow-green), 0 0 60px rgba(16, 185, 129, 0.6);
+  }
+}
+
+/* Efecto glassmorphism mejorado */
+.glass-effect {
+  background: var(--gradient-card);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  box-shadow: var(--shadow-light);
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+}
+
+/* Botones estilo racing mejorados */
+.btn-racing {
+  background: var(--gradient-primary);
+  border: 2px solid var(--neon-blue);
+  color: var(--pure-white);
+  font-family: var(--font-tech);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 12px 30px;
+  border-radius: 50px;
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition-glow);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: var(--shadow-light);
+}
+
+.btn-racing::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transition: left 0.5s;
+}
+
+.btn-racing:hover::before {
+  left: 100%;
+}
+
+.btn-racing:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: var(--neon-glow-blue);
+  color: var(--pure-white);
+  border-color: var(--electric-violet);
+}
+
+/* Efectos de entrada por secciones */
+.fade-in-up {
+  animation: fadeInUp 1s ease-out forwards;
+}
+
+.fade-in-left {
+  animation: fadeInLeft 1s ease-out forwards;
+}
+
+.fade-in-right {
+  animation: fadeInRight 1s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Líneas dinámicas cyberpunk */
+.cyber-lines {
+  position: relative;
+  overflow: hidden;
+}
+
+.cyber-lines::before,
+.cyber-lines::after {
+  content: '';
+  position: absolute;
+  height: 2px;
+  background: var(--gradient-primary);
+  animation: scan-line 4s infinite linear;
+  opacity: 0.6;
+}
+
+.cyber-lines::before {
+  top: 20%;
+  width: 100%;
+  left: -100%;
+}
+
+.cyber-lines::after {
+  bottom: 20%;
+  width: 80%;
+  right: -80%;
+  animation-delay: 1.5s;
+}
+
+@keyframes scan-line {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(100vw);
+  }
+}
+
+/* Grid futurista para skills */
+.tech-grid {
+  display: grid;
+  gap: 2rem;
+  padding: 2rem 0;
+}
+
+.skill-card {
+  background: var(--gradient-card);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 212, 255, 0.15);
+  border-radius: 16px;
+  padding: 2rem;
+  text-align: center;
+  transition: var(--transition-glow);
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-light);
+}
+
+.skill-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 0deg,
+      transparent,
+      var(--neon-blue),
+      transparent);
+  animation: rotate-border 6s linear infinite;
+  z-index: -1;
+  opacity: 0.7;
+}
+
+.skill-card::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background: var(--bg-asphalt);
+  border-radius: 14px;
+  z-index: -1;
+}
+
+@keyframes rotate-border {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.skill-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: var(--neon-glow-blue);
+  border-color: var(--electric-violet);
+}
+
+/* Barras de progreso animadas */
+.progress-bar-custom {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 1rem;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--gradient-primary);
+  border-radius: 10px;
+  position: relative;
+  animation: progress-load 2s ease-out forwards;
+  transform-origin: left;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20px;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.3);
+  animation: progress-shine 2s infinite;
+}
+
+@keyframes progress-load {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes progress-shine {
+
+  0%,
+  100% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Cards de proyectos con hover glow */
+.project-card {
+  background: var(--gradient-card);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: var(--transition-glow);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: var(--shadow-light);
+}
+
+.project-card:hover {
+  transform: translateY(-15px) scale(1.02);
+  box-shadow:
+    var(--neon-glow-violet),
+    0 20px 40px rgba(139, 92, 246, 0.25);
+  border-color: var(--electric-violet);
+}
+
+.project-image {
+  position: relative;
+  overflow: hidden;
+  height: 200px;
+  background: var(--gradient-tokyo);
+}
+
+.project-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: var(--transition-smooth);
+}
+
+.project-card:hover .project-overlay {
+  opacity: 1;
+}
+
+/* Secciones principales */
+section {
+  padding: 100px 0;
+  position: relative;
+}
+
+.section-title {
+  font-family: var(--font-arcade);
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.section-divider {
+  width: 100px;
+  height: 3px;
+  background: var(--gradient-primary);
+  margin: 0 auto 4rem;
+  border-radius: 2px;
+}
+
+/* Formulario de contacto */
+.form-control-custom {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 212, 255, 0.25);
+  border-radius: 12px;
+  color: var(--pure-white);
+  padding: 15px;
+  font-family: var(--font-tech);
+  transition: var(--transition-smooth);
+}
+
+.form-control-custom:focus {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--neon-blue);
+  box-shadow: var(--neon-glow-blue);
+  color: var(--pure-white);
+  outline: none;
+}
+
+.form-control-custom::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Enlaces sociales */
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  background: var(--gradient-card);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 212, 255, 0.25);
+  border-radius: 50%;
+  color: var(--neon-blue);
+  font-size: 1.5rem;
+  text-decoration: none;
+  transition: var(--transition-glow);
+  margin: 0 10px;
+  box-shadow: var(--shadow-light);
+}
+
+.social-link:hover {
+  color: var(--pure-white);
+  background: var(--neon-blue);
+  box-shadow: var(--neon-glow-blue);
+  transform: translateY(-5px) scale(1.1);
+  border-color: var(--electric-violet);
+}
+
+/* Tags de tecnología */
+.tech-tag {
+  display: inline-block;
+  background: rgba(0, 212, 255, 0.08);
+  border: 1px solid rgba(0, 212, 255, 0.25);
+  color: var(--neon-blue);
+  padding: 6px 16px;
+  margin: 4px;
+  border-radius: 25px;
+  font-size: 0.85rem;
+  font-family: var(--font-tech);
+  font-weight: 500;
+  transition: var(--transition-fast);
+}
+
+.tech-tag:hover {
+  background: rgba(139, 92, 246, 0.1);
+  border-color: var(--electric-violet);
+  color: var(--electric-violet);
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 1.8rem;
+  }
+
+  .btn-racing {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+
+  .skill-card {
+    padding: 1.5rem;
+  }
+
+  section {
+    padding: 60px 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .arcade-text {
+    letter-spacing: 1px;
   }
 }
