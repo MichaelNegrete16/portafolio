@@ -319,7 +319,7 @@ export default function Projects() {
         <div className="row mt-5">
           <div className="col-12 text-center">
             <a
-              href="https://github.com/jackson"
+              href="https://github.com/MichaelNegrete16"
               className="btn-racing"
               target="_blank"
               rel="noopener noreferrer"
