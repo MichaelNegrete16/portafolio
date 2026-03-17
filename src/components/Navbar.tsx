@@ -2,157 +2,100 @@
 
 import { useState, useEffect } from "react";
 
+const navLinks = [
+  { label: "PERFIL", target: "about" },
+  { label: "HABILIDADES", target: "skills" },
+  { label: "PROYECTOS", target: "projects" },
+  { label: "CONTACTO", target: "contact" },
+];
+
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleSmoothScroll = (
-    e: React.MouseEvent<HTMLAnchorElement>,
-    targetId: string
-  ) => {
-    e.preventDefault();
-    const target = document.getElementById(targetId);
-    if (target) {
-      target.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    setIsOpen(false);
   };
 
   return (
     <nav
-      className={`navbar navbar-expand-lg navbar-dark fixed-top ${
-        isScrolled ? "glass-dark" : "glass-effect"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? "bg-jdm-cream/95 backdrop-blur-md shadow-md"
+          : "bg-transparent"
       }`}
     >
-      <div className="container">
-        <a
-          className="navbar-brand neon-text arcade-text"
-          href="#hero"
-          onClick={(e) => handleSmoothScroll(e, "hero")}
-        >
-          <span className="d-inline-block me-2" style={{ fontSize: "1.2rem" }}>
-            ジャクソン
-          </span>
-          <span className="d-none d-md-inline">GARAGE</span>
-        </a>
-
+      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        {/* Brand */}
         <button
-          className="navbar-toggler border-0"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          style={{
-            boxShadow: "none",
-            background: "rgba(0, 255, 240, 0.1)",
-            borderRadius: "8px",
-          }}
+          onClick={() => scrollTo("hero")}
+          className="flex items-center gap-3 group"
         >
-          <span className="navbar-toggler-icon"></span>
+          <span className="text-jdm-red font-bold text-xl tracking-wider">
+            PROJECT_86
+          </span>
+          <span className="font-[var(--font-jp)] text-jdm-black/50 text-sm hidden md:block">
+            ハチロク
+          </span>
         </button>
 
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav ms-auto">
-            <li className="nav-item">
-              <a
-                className="nav-link tech-text fw-bold"
-                href="#about"
-                onClick={(e) => handleSmoothScroll(e, "about")}
-                style={{
-                  transition: "all 0.3s ease",
-                  padding: "8px 16px",
-                  borderRadius: "25px",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = "var(--bright-cyan)";
-                  e.currentTarget.style.textShadow = "var(--neon-glow-cyan)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = "";
-                  e.currentTarget.style.textShadow = "";
-                }}
-              >
-                About
-              </a>
-            </li>
-            <li className="nav-item">
-              <a
-                className="nav-link tech-text fw-bold"
-                href="#skills"
-                onClick={(e) => handleSmoothScroll(e, "skills")}
-                style={{
-                  transition: "all 0.3s ease",
-                  padding: "8px 16px",
-                  borderRadius: "25px",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = "var(--bright-cyan)";
-                  e.currentTarget.style.textShadow = "var(--neon-glow-cyan)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = "";
-                  e.currentTarget.style.textShadow = "";
-                }}
-              >
-                Skills
-              </a>
-            </li>
-            <li className="nav-item">
-              <a
-                className="nav-link tech-text fw-bold"
-                href="#projects"
-                onClick={(e) => handleSmoothScroll(e, "projects")}
-                style={{
-                  transition: "all 0.3s ease",
-                  padding: "8px 16px",
-                  borderRadius: "25px",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = "var(--bright-cyan)";
-                  e.currentTarget.style.textShadow = "var(--neon-glow-cyan)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = "";
-                  e.currentTarget.style.textShadow = "";
-                }}
-              >
-                Projects
-              </a>
-            </li>
-            <li className="nav-item">
-              <a
-                className="nav-link tech-text fw-bold"
-                href="#contact"
-                onClick={(e) => handleSmoothScroll(e, "contact")}
-                style={{
-                  transition: "all 0.3s ease",
-                  padding: "8px 16px",
-                  borderRadius: "25px",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = "var(--bright-cyan)";
-                  e.currentTarget.style.textShadow = "var(--neon-glow-cyan)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = "";
-                  e.currentTarget.style.textShadow = "";
-                }}
-              >
-                Contact
-              </a>
-            </li>
-          </ul>
+        {/* Desktop Nav */}
+        <div className="hidden md:flex items-center gap-8">
+          {navLinks.map((link) => (
+            <button
+              key={link.target}
+              onClick={() => scrollTo(link.target)}
+              className="text-sm font-semibold tracking-widest text-jdm-black/70 hover:text-jdm-red transition-colors duration-300 jdm-link"
+            >
+              {link.label}
+            </button>
+          ))}
         </div>
+
+        {/* Mobile toggle */}
+        <button
+          className="md:hidden flex flex-col gap-1.5"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <span
+            className={`w-6 h-0.5 bg-jdm-black transition-all ${
+              isOpen ? "rotate-45 translate-y-2" : ""
+            }`}
+          />
+          <span
+            className={`w-6 h-0.5 bg-jdm-black transition-all ${
+              isOpen ? "opacity-0" : ""
+            }`}
+          />
+          <span
+            className={`w-6 h-0.5 bg-jdm-black transition-all ${
+              isOpen ? "-rotate-45 -translate-y-2" : ""
+            }`}
+          />
+        </button>
       </div>
+
+      {/* Mobile Menu */}
+      {isOpen && (
+        <div className="md:hidden bg-jdm-cream border-t border-jdm-black/10 px-6 pb-4">
+          {navLinks.map((link) => (
+            <button
+              key={link.target}
+              onClick={() => scrollTo(link.target)}
+              className="block w-full text-left py-3 text-sm font-semibold tracking-widest text-jdm-black/70 hover:text-jdm-red transition-colors"
+            >
+              {link.label}
+            </button>
+          ))}
+        </div>
+      )}
     </nav>
   );
 }

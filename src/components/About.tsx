@@ -1,189 +1,115 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
+
+const specs = [
+  { label: "NOMBRE", value: "Michael Antonio Negrete" },
+  { label: "ROL", value: "Ingeniero de Software Full Stack" },
+  { label: "UBICACIÓN", value: "Cartagena, Colombia" },
+  { label: "EXPERIENCIA", value: "+3 Años en Producción" },
+  { label: "EDUCACIÓN", value: "Tecnólogo en Sistemas — UTB" },
+  { label: "ESTADO", value: "Disponible para nuevos proyectos" },
+  { label: "IDIOMAS", value: "Español (Nativo) / Inglés (Profesional)" },
+  { label: "ENFOQUE", value: "React, Next.js, TypeScript, NestJS" },
+];
+
 export default function About() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setIsVisible(true);
+      },
+      { threshold: 0.2 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section id="about" className="py-5">
-      <div className="container">
-        <div className="row">
-          <div className="col-12 text-center mb-5">
-            <h2 className="section-title neon-text arcade-text">About Me</h2>
-            <div className="section-divider"></div>
-          </div>
+    <section
+      id="about"
+      ref={sectionRef}
+      className="py-24 md:py-32 relative stripe-pattern"
+    >
+      <div className="max-w-7xl mx-auto px-6">
+        {/* Section Header */}
+        <div className="flex items-center gap-4 mb-16">
+          <div className="w-16 h-[2px] bg-jdm-red" />
+          <h2 className="text-sm font-bold tracking-[0.3em] uppercase text-jdm-gray">
+            01 &mdash; Ficha Técnica
+          </h2>
         </div>
 
-        <div className="row align-items-center">
-          <div className="col-lg-6 mb-4 mb-lg-0">
-            <div className="fade-in-left">
-              {/* Imagen de perfil placeholder con efecto neón */}
-              <div
-                className="position-relative mx-auto glass-effect p-4 rounded-circle"
-                style={{
-                  width: "300px",
-                  height: "300px",
-                  background: "var(--gradient-tokyo)",
-                  border: "3px solid var(--bright-cyan)",
-                  boxShadow: "var(--neon-glow-cyan)",
-                }}
-              >
-                <div
-                  className="d-flex align-items-center justify-content-center h-100 rounded-circle"
-                  style={{
-                    background: "rgba(0, 0, 0, 0.7)",
-                    border: "2px solid rgba(0, 255, 240, 0.3)",
-                  }}
-                >
-                  <i
-                    className="bi bi-person-circle neon-text"
-                    style={{ fontSize: "120px" }}
-                  ></i>
-                </div>
+        <div className="grid md:grid-cols-2 gap-16">
+          {/* Left - Description */}
+          <div
+            className={`${
+              isVisible ? "animate-fade-in-up" : "opacity-0"
+            }`}
+          >
+            <h3 className="text-4xl md:text-5xl font-bold text-jdm-black mb-8 leading-tight">
+              Construyendo
+              <br />
+              experiencias digitales
+              <br />
+              que <span className="text-jdm-red">rinden.</span>
+            </h3>
 
-                {/* Efectos orbitales */}
-                <div
-                  className="position-absolute"
-                  style={{
-                    top: "10px",
-                    right: "10px",
-                    width: "20px",
-                    height: "20px",
-                    background: "var(--neon-red)",
-                    borderRadius: "50%",
-                    boxShadow: "var(--neon-glow-red)",
-                    animation: "pulse-glow 2s infinite",
-                  }}
-                />
-                <div
-                  className="position-absolute"
-                  style={{
-                    bottom: "30px",
-                    left: "20px",
-                    width: "15px",
-                    height: "15px",
-                    background: "var(--electric-purple)",
-                    borderRadius: "50%",
-                    boxShadow: "var(--neon-glow-purple)",
-                    animation: "pulse-glow 3s infinite",
-                  }}
-                />
-              </div>
-            </div>
+            <p className="text-jdm-black/70 text-lg leading-relaxed mb-6">
+              Ingeniero de Software Full Stack con historial comprobado
+              entregando productos orientados al consumidor de extremo a extremo.
+              Especializado en arquitectura frontend moderna, manejo de estado,
+              testing integral y prácticas CI/CD.
+            </p>
+
+            <p className="text-jdm-black/70 text-lg leading-relaxed mb-8">
+              He construido pasarelas de pago con SSR, reducido la complejidad
+              del código en un 60%, y diseñado APIs RESTful con NestJS,
+              sirviendo a miles de usuarios en producción.
+            </p>
+
+            <p className="font-[var(--font-jp)] text-jdm-black/30 text-2xl">
+              コードは速く、正確に
+            </p>
+            <p className="text-sm text-jdm-gray italic mt-1">
+              &quot;Código rápido, código preciso.&quot;
+            </p>
           </div>
 
-          <div className="col-lg-6">
-            <div className="fade-in-right">
-              {/* Título japonés */}
-              <h3
-                className="arcade-text mb-3"
-                style={{
-                  color: "var(--electric-purple)",
-                  textShadow: "var(--neon-glow-purple)",
-                  fontSize: "clamp(1rem, 3vw, 1.5rem)",
-                  letterSpacing: "2px",
-                }}
-              >
-                コードは東京の夜の道のように
-              </h3>
-
-              <p
-                className="tech-text mb-4"
-                style={{
-                  color: "var(--bright-cyan)",
-                  fontStyle: "italic",
-                  fontSize: "1.1rem",
-                }}
-              >
-                &quot;Code like the night streets of Tokyo — fast and
-                precise.&quot;
-              </p>
-
-              {/* Biografía principal */}
-              <div className="glass-effect p-4 mb-4 rounded">
-                <p
-                  className="tech-text mb-3"
-                  style={{
-                    lineHeight: "1.8",
-                    color: "rgba(255, 255, 255, 0.85)",
-                  }}
-                >
-                  Soy un{" "}
-                  <span className="neon-text-red fw-bold">
-                    Full Stack Developer
-                  </span>{" "}
-                  con enfoque en Frontend y especialización en{" "}
-                  <span className="neon-text fw-bold">Next.js</span>. Me
-                  apasiona crear experiencias web rápidas, modernas y
-                  visualmente impactantes que combinan funcionalidad con diseño
-                  excepcional.
-                </p>
-
-                <p
-                  className="tech-text mb-3"
-                  style={{
-                    lineHeight: "1.8",
-                    color: "rgba(255, 255, 255, 0.85)",
-                  }}
-                >
-                  Con experiencia en el desarrollo de aplicaciones web
-                  completas, desde la conceptualización hasta el despliegue, me
-                  especializo en tecnologías modernas como
-                  <span className="tech-tag ms-2 me-1">React</span>
-                  <span className="tech-tag me-1">Next.js</span>
-                  <span className="tech-tag me-1">Node.js</span>
-                </p>
-
-                <p
-                  className="tech-text mb-0"
-                  style={{
-                    lineHeight: "1.8",
-                    color: "rgba(255, 255, 255, 0.85)",
-                  }}
-                >
-                  Desde{" "}
-                  <span className="neon-text-purple fw-bold">Colombia</span>,
-                  trabajo creando soluciones digitales que no solo funcionan
-                  perfectamente, sino que también cautivan visualmente a los
-                  usuarios.
-                </p>
+          {/* Right - Spec Table */}
+          <div
+            className={`${
+              isVisible ? "animate-fade-in-up" : "opacity-0"
+            }`}
+            style={{ animationDelay: "0.2s" }}
+          >
+            <div className="tech-border bg-white/50 backdrop-blur-sm">
+              <div className="bg-jdm-black text-jdm-cream px-6 py-3 flex justify-between items-center">
+                <span className="text-xs font-bold tracking-[0.3em] uppercase">
+                  Perfil del Desarrollador
+                </span>
+                <span className="font-[var(--font-jp)] text-jdm-red text-xs">
+                  仕様書
+                </span>
               </div>
 
-              {/* Ubicación y contacto rápido */}
-              <div className="mt-4 d-flex align-items-center justify-content-start flex-wrap gap-3">
-                <div className="d-flex align-items-center">
-                  <i
-                    className="bi bi-geo-alt-fill neon-text me-2"
-                    style={{ fontSize: "1.2rem" }}
-                  ></i>
-                  <span
-                    className="tech-text"
-                    style={{ color: "rgba(255, 255, 255, 0.85)" }}
+              <div className="divide-y divide-jdm-black/10">
+                {specs.map((spec) => (
+                  <div
+                    key={spec.label}
+                    className="grid grid-cols-[120px_1fr] md:grid-cols-[140px_1fr]"
                   >
-                    Colombia
-                  </span>
-                </div>
-                <div className="d-flex align-items-center">
-                  <i
-                    className="bi bi-code-slash neon-text-red me-2"
-                    style={{ fontSize: "1.2rem" }}
-                  ></i>
-                  <span
-                    className="tech-text"
-                    style={{ color: "rgba(255, 255, 255, 0.85)" }}
-                  >
-                    Frontend Specialist
-                  </span>
-                </div>
-                <div className="d-flex align-items-center">
-                  <i
-                    className="bi bi-lightning-charge-fill neon-text-purple me-2"
-                    style={{ fontSize: "1.2rem" }}
-                  ></i>
-                  <span
-                    className="tech-text"
-                    style={{ color: "rgba(255, 255, 255, 0.85)" }}
-                  >
-                    Next.js
-                  </span>
-                </div>
+                    <div className="px-6 py-4 bg-jdm-black/5 text-xs font-bold tracking-wider text-jdm-gray uppercase">
+                      {spec.label}
+                    </div>
+                    <div className="px-6 py-4 text-sm text-jdm-black font-medium">
+                      {spec.value}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

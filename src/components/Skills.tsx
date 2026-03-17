@@ -1,272 +1,204 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
-interface Skill {
-  category: string;
-  icon: string;
-  skills: string[];
-  progress: number;
-  color: string;
+interface SkillCategory {
+  title: string;
+  titleJp: string;
+  skills: { name: string; level: number }[];
 }
 
-const skillsData: Skill[] = [
+const skillsData: SkillCategory[] = [
   {
-    category: "Frontend",
-    icon: "bi-code-slash",
-    skills: ["Next.js", "React", "JavaScript", "TypeScript", "HTML5", "CSS3"],
-    progress: 95,
-    color: "var(--neon-red)",
-  },
-  {
-    category: "Backend",
-    icon: "bi-server",
+    title: "Frontend",
+    titleJp: "フロントエンド",
     skills: [
-      "Node.js",
-      "Express",
-      "REST APIs",
-      "MongoDB",
-      "PostgreSQL",
-      "Docker",
+      { name: "TypeScript", level: 95 },
+      { name: "React", level: 95 },
+      { name: "Next.js", level: 95 },
+      { name: "Redux Toolkit", level: 85 },
+      { name: "HTML5 / CSS3", level: 95 },
+      { name: "JavaScript (ES6+)", level: 95 },
     ],
-    progress: 85,
-    color: "var(--bright-cyan)",
   },
   {
-    category: "Tools & Others",
-    icon: "bi-tools",
-    skills: ["Git", "Bootstrap", "Tailwind", "Figma", "SSR", "Vercel"],
-    progress: 90,
-    color: "var(--electric-purple)",
+    title: "Backend",
+    titleJp: "バックエンド",
+    skills: [
+      { name: "NestJS", level: 85 },
+      { name: "Node.js", level: 85 },
+      { name: "PostgreSQL", level: 80 },
+      { name: "TypeORM", level: 80 },
+      { name: "REST APIs", level: 90 },
+      { name: "OAuth 2.0", level: 75 },
+    ],
+  },
+  {
+    title: "Herramientas y DevOps",
+    titleJp: "ツール",
+    skills: [
+      { name: "Git / GitHub", level: 90 },
+      { name: "Docker", level: 70 },
+      { name: "CI/CD", level: 75 },
+      { name: "Vercel", level: 85 },
+      { name: "Jest / RTL", level: 80 },
+      { name: "SonarQube", level: 75 },
+    ],
   },
 ];
 
+const styleSkills = [
+  "SASS/SCSS",
+  "Material UI",
+  "CSS Modules",
+  "Tailwind CSS",
+  "Diseño Responsivo",
+  "Mobile-First",
+];
+
+const exploringSkills = [
+  "Ruby on Rails",
+  "GraphQL",
+  "Flutter/Dart",
+  "Integración AI/LLM",
+];
+
 export default function Skills() {
-  const progressRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [animatedBars, setAnimatedBars] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const progressBar = entry.target as HTMLDivElement;
-            const progressValue = progressBar.getAttribute("data-progress");
-            if (progressValue) {
-              progressBar.style.transform = `scaleX(${progressValue}%)`;
-            }
-          }
-        });
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          setTimeout(() => setAnimatedBars(true), 300);
+        }
       },
-      { threshold: 0.5 }
+      { threshold: 0.1 }
     );
-
-    progressRefs.current.forEach((ref) => {
-      if (ref) observer.observe(ref);
-    });
-
+    if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
 
   return (
     <section
       id="skills"
-      className="py-5"
-      style={{ background: "var(--gradient-tokyo)" }}
+      ref={sectionRef}
+      className="py-24 md:py-32 bg-jdm-black text-jdm-cream relative overflow-hidden"
     >
-      <div className="container">
-        <div className="row">
-          <div className="col-12 text-center mb-5">
-            <h2 className="section-title neon-text arcade-text">
-              Technical Skills
-            </h2>
-            <div className="section-divider"></div>
-            <p
-              className="tech-text mb-0"
-              style={{
-                fontSize: "1.2rem",
-                color: "rgba(255, 255, 255, 0.8)",
-                maxWidth: "600px",
-                margin: "0 auto",
-              }}
-            >
-              Especializaciones técnicas que domino para crear experiencias web
-              excepcionales
-            </p>
-          </div>
+      {/* Grid overlay */}
+      <div
+        className="absolute inset-0 opacity-5"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(244,241,234,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(244,241,234,0.1) 1px, transparent 1px)",
+          backgroundSize: "40px 40px",
+        }}
+      />
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        {/* Section Header */}
+        <div className="flex items-center gap-4 mb-16">
+          <div className="w-16 h-[2px] bg-jdm-red" />
+          <h2 className="text-sm font-bold tracking-[0.3em] uppercase text-jdm-gray">
+            02 &mdash; Piezas de Rendimiento
+          </h2>
         </div>
 
-        <div className="row g-4">
-          {skillsData.map((skillCategory, index) => (
-            <div key={index} className="col-lg-4 col-md-6">
-              <div
-                className="skill-card h-100 fade-in-up"
-                style={{
-                  animationDelay: `${index * 0.2}s`,
-                  position: "relative",
-                  overflow: "hidden",
-                }}
-              >
-                {/* Icono principal */}
-                <div
-                  className="text-center mb-4"
-                  style={{
-                    fontSize: "3rem",
-                    color: skillCategory.color,
-                    filter: `drop-shadow(0 0 20px ${skillCategory.color})`,
-                  }}
-                >
-                  <i className={skillCategory.icon}></i>
+        <h3
+          className={`text-4xl md:text-5xl font-bold mb-16 leading-tight ${
+            isVisible ? "animate-fade-in-up" : "opacity-0"
+          }`}
+        >
+          Arsenal
+          <br />
+          <span className="text-jdm-red">Técnico</span>
+        </h3>
+
+        {/* Skill Categories */}
+        <div className="grid md:grid-cols-3 gap-8 mb-16">
+          {skillsData.map((category, catIdx) => (
+            <div
+              key={category.title}
+              className={`${
+                isVisible ? "animate-fade-in-up" : "opacity-0"
+              }`}
+              style={{ animationDelay: `${catIdx * 0.15}s` }}
+            >
+              <div className="border border-jdm-cream/10 bg-jdm-cream/5 backdrop-blur-sm">
+                {/* Category Header */}
+                <div className="flex justify-between items-center px-6 py-4 border-b border-jdm-cream/10">
+                  <h4 className="font-bold text-lg tracking-wider uppercase">
+                    {category.title}
+                  </h4>
+                  <span className="font-[var(--font-jp)] text-jdm-red text-xs">
+                    {category.titleJp}
+                  </span>
                 </div>
 
-                {/* Título de categoría */}
-                <h4
-                  className="text-center mb-4 arcade-text"
-                  style={{
-                    color: skillCategory.color,
-                    textShadow: `0 0 20px ${skillCategory.color}`,
-                    fontSize: "1.3rem",
-                    letterSpacing: "1px",
-                  }}
-                >
-                  {skillCategory.category}
-                </h4>
-
-                {/* Lista de habilidades */}
-                <div className="mb-4">
-                  <div className="d-flex flex-wrap justify-content-center gap-2">
-                    {skillCategory.skills.map((skill, skillIndex) => (
-                      <span
-                        key={skillIndex}
-                        className="tech-tag"
-                        style={{
-                          background: `${skillCategory.color}20`,
-                          border: `1px solid ${skillCategory.color}60`,
-                          color: skillCategory.color,
-                          transition: "var(--transition-smooth)",
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.background =
-                            skillCategory.color;
-                          e.currentTarget.style.color = "var(--bg-asphalt)";
-                          e.currentTarget.style.transform = "translateY(-2px)";
-                          e.currentTarget.style.boxShadow = `0 0 15px ${skillCategory.color}`;
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.background = `${skillCategory.color}20`;
-                          e.currentTarget.style.color = skillCategory.color;
-                          e.currentTarget.style.transform = "";
-                          e.currentTarget.style.boxShadow = "";
-                        }}
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
+                {/* Skills List */}
+                <div className="p-6 space-y-5">
+                  {category.skills.map((skill) => (
+                    <div key={skill.name}>
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm font-medium text-jdm-cream/80">
+                          {skill.name}
+                        </span>
+                        <span className="text-xs font-bold text-jdm-red">
+                          {skill.level}%
+                        </span>
+                      </div>
+                      <div className="jdm-progress">
+                        <div
+                          className="jdm-progress-fill"
+                          style={{
+                            width: animatedBars ? `${skill.level}%` : "0%",
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ))}
                 </div>
-
-                {/* Barra de progreso */}
-                <div className="mt-auto">
-                  <div className="d-flex justify-content-between align-items-center mb-2">
-                    <span
-                      className="tech-text"
-                      style={{ color: "rgba(255, 255, 255, 0.8)" }}
-                    >
-                      Nivel de Expertise
-                    </span>
-                    <span
-                      className="arcade-text"
-                      style={{
-                        color: skillCategory.color,
-                        fontSize: "0.9rem",
-                      }}
-                    >
-                      {skillCategory.progress}%
-                    </span>
-                  </div>
-
-                  <div className="progress-bar-custom">
-                    <div
-                      ref={(el) => {
-                        progressRefs.current[index] = el;
-                      }}
-                      className="progress-fill"
-                      data-progress={skillCategory.progress / 100}
-                      style={{
-                        background: `linear-gradient(90deg, ${skillCategory.color}, ${skillCategory.color}80)`,
-                        transform: "scaleX(0)",
-                        transition: "transform 2s ease-out",
-                      }}
-                    />
-                  </div>
-                </div>
-
-                {/* Efecto de border animado específico por color */}
-                <div
-                  className="position-absolute top-0 start-0 w-100 h-100"
-                  style={{
-                    background: `conic-gradient(from 0deg, transparent, ${skillCategory.color}, transparent)`,
-                    animation: "rotate-border 4s linear infinite",
-                    zIndex: -1,
-                    borderRadius: "15px",
-                  }}
-                />
               </div>
             </div>
           ))}
         </div>
 
-        {/* Sección adicional: Metodologías y herramientas */}
-        <div className="row mt-5">
-          <div className="col-12">
-            <div className="glass-effect p-4 rounded">
-              <h4
-                className="text-center mb-4 arcade-text"
-                style={{
-                  color: "var(--bright-cyan)",
-                  textShadow: "var(--neon-glow-cyan)",
-                }}
-              >
-                Metodologías y Herramientas
-              </h4>
+        {/* Bottom Tags */}
+        <div className="grid md:grid-cols-2 gap-8">
+          {/* Styling */}
+          <div className="border border-jdm-cream/10 p-6">
+            <h4 className="text-xs font-bold tracking-[0.3em] uppercase text-jdm-gray mb-4">
+              Estilos y Diseño
+            </h4>
+            <div className="flex flex-wrap gap-2">
+              {styleSkills.map((skill) => (
+                <span
+                  key={skill}
+                  className="px-4 py-2 text-sm border border-jdm-cream/20 text-jdm-cream/70 hover:border-jdm-red hover:text-jdm-red transition-colors cursor-default"
+                >
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </div>
 
-              <div className="row text-center">
-                <div className="col-md-3 col-6 mb-3">
-                  <div className="glass-effect p-3 rounded">
-                    <i
-                      className="bi bi-arrow-repeat neon-text-red d-block mb-2"
-                      style={{ fontSize: "2rem" }}
-                    ></i>
-                    <span className="tech-text">Agile/Scrum</span>
-                  </div>
-                </div>
-                <div className="col-md-3 col-6 mb-3">
-                  <div className="glass-effect p-3 rounded">
-                    <i
-                      className="bi bi-git neon-text d-block mb-2"
-                      style={{ fontSize: "2rem" }}
-                    ></i>
-                    <span className="tech-text">Git Flow</span>
-                  </div>
-                </div>
-                <div className="col-md-3 col-6 mb-3">
-                  <div className="glass-effect p-3 rounded">
-                    <i
-                      className="bi bi-phone neon-text-purple d-block mb-2"
-                      style={{ fontSize: "2rem" }}
-                    ></i>
-                    <span className="tech-text">Responsive Design</span>
-                  </div>
-                </div>
-                <div className="col-md-3 col-6 mb-3">
-                  <div className="glass-effect p-3 rounded">
-                    <i
-                      className="bi bi-speedometer2 neon-text-red d-block mb-2"
-                      style={{ fontSize: "2rem" }}
-                    ></i>
-                    <span className="tech-text">Performance</span>
-                  </div>
-                </div>
-              </div>
+          {/* Exploring */}
+          <div className="border border-jdm-cream/10 p-6">
+            <h4 className="text-xs font-bold tracking-[0.3em] uppercase text-jdm-gray mb-4">
+              Explorando Actualmente
+            </h4>
+            <div className="flex flex-wrap gap-2">
+              {exploringSkills.map((skill) => (
+                <span
+                  key={skill}
+                  className="px-4 py-2 text-sm border border-jdm-red/30 text-jdm-red/70 hover:border-jdm-red hover:text-jdm-red transition-colors cursor-default"
+                >
+                  {skill}
+                </span>
+              ))}
             </div>
           </div>
         </div>

@@ -1,166 +1,145 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 export default function Hero() {
   const [displayText, setDisplayText] = useState("");
-  const fullText = "Frontend Developer | Next.js | Full Stack Engineer";
+  const fullText = "Ingeniero de Software Full Stack";
 
   useEffect(() => {
-    let index = 0;
+    let i = 0;
     const timer = setInterval(() => {
-      setDisplayText(fullText.slice(0, index));
-      index++;
-      if (index > fullText.length) {
-        clearInterval(timer);
-      }
-    }, 50);
-
+      setDisplayText(fullText.slice(0, i));
+      i++;
+      if (i > fullText.length) clearInterval(timer);
+    }, 60);
     return () => clearInterval(timer);
   }, []);
 
-  const handleScrollToProjects = () => {
-    const projectsSection = document.getElementById("projects");
-    if (projectsSection) {
-      projectsSection.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
     <section
       id="hero"
-      className="position-relative vh-100 d-flex align-items-center"
+      className="relative min-h-screen flex items-center grid-bg overflow-hidden"
     >
-      <div
-        className="position-absolute top-0 start-0 w-100 h-100"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(0, 212, 255, 0.08) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0, 212, 255, 0.08) 1px, transparent 1px)
-          `,
-          backgroundSize: "60px 60px",
-          opacity: 0.4,
-          zIndex: -1,
-        }}
-      />
+      {/* Scanner line effect */}
+      <div className="scanner-line" />
 
-      <div className="container">
-        <div className="row justify-content-center text-center">
-          <div className="col-lg-10">
-            {/* Nombre principal con efecto glitch */}
-            <h1
-              className="mb-4 arcade-text"
-              style={{
-                fontSize: "clamp(3rem, 8vw, 6rem)",
-                fontWeight: "900",
-                background:
-                  "linear-gradient(45deg, var(--neon-blue), var(--electric-violet), var(--sunset-orange))",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-                textShadow: "0 0 30px rgba(0, 212, 255, 0.6)",
-                letterSpacing: "5px",
-              }}
-            >
-              MICHAEL NEGRETE
+      {/* Decorative vertical text */}
+      <div className="absolute left-6 top-1/2 -translate-y-1/2 hidden lg:block">
+        <p className="vertical-text font-[var(--font-jp)] text-jdm-black/10 text-6xl font-bold tracking-widest">
+          ハチロク
+        </p>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 w-full">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Left - Text Content */}
+          <div>
+            {/* Top label */}
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-12 h-[2px] bg-jdm-red" />
+              <span className="text-sm font-semibold tracking-[0.3em] uppercase text-jdm-gray">
+                Desde 2023 &mdash; Cartagena, Colombia
+              </span>
+            </div>
+
+            {/* Name */}
+            <h1 className="text-6xl md:text-8xl font-bold text-jdm-black leading-[0.9] mb-6 tracking-tight">
+              MICHAEL
+              <br />
+              <span className="text-jdm-red">NEGRETE</span>
             </h1>
 
-            {/* Subtítulo con efecto typewriter */}
-            <div className="mb-4">
-              <h2
-                className="tech-text fw-bold"
-                style={{
-                  fontSize: "clamp(1.2rem, 3vw, 1.8rem)",
-                  color: "var(--neon-blue)",
-                  textShadow: "var(--neon-glow-blue)",
-                  minHeight: "2.5rem",
-                  fontFamily: "var(--font-tech)",
-                }}
-              >
+            {/* Typewriter subtitle */}
+            <div className="mb-8 h-8">
+              <p className="text-xl md:text-2xl font-medium text-jdm-gray">
                 {displayText}
-                <span
-                  style={{
-                    animation: "blink 1s infinite",
-                    color: "var(--sunset-orange)",
-                  }}
-                >
-                  |
-                </span>
-              </h2>
+                <span className="animate-pulse text-jdm-red">|</span>
+              </p>
             </div>
 
-            {/* Descripción */}
-            <p
-              className="mb-5 tech-text fade-in-up"
-              style={{
-                fontSize: "clamp(1rem, 2.5vw, 1.3rem)",
-                color: "rgba(255, 255, 255, 0.8)",
-                maxWidth: "600px",
-                margin: "0 auto 3rem",
-                lineHeight: "1.6",
-              }}
-            >
-              Building fast, sleek, and pixel-perfect experiences.
+            {/* Description */}
+            <p className="text-lg text-jdm-black/60 max-w-xl mb-10 leading-relaxed">
+              +3 años construyendo y escalando aplicaciones web en producción
+              con TypeScript, React y Next.js. Enfocado en rendimiento, calidad
+              de código y experiencia de usuario excepcional.
             </p>
 
-            {/* Frase japonesa */}
-            <div className="mb-5 fade-in-up" style={{ animationDelay: "0.5s" }}>
-              <p
-                className="arcade-text"
-                style={{
-                  fontSize: "clamp(0.8rem, 2vw, 1rem)",
-                  color: "var(--electric-purple)",
-                  textShadow: "var(--neon-glow-purple)",
-                  marginBottom: "0.5rem",
-                  letterSpacing: "2px",
-                }}
+            {/* CTA Buttons */}
+            <div className="flex flex-wrap gap-4">
+              <button
+                onClick={() => scrollTo("projects")}
+                className="bg-jdm-red text-jdm-cream px-8 py-4 font-semibold tracking-wider uppercase text-sm hover:bg-jdm-red-dark transition-colors duration-300"
               >
-                コードは東京の夜の道のように
-              </p>
-              <p
-                className="tech-text"
-                style={{
-                  fontSize: "clamp(0.9rem, 2vw, 1.1rem)",
-                  color: "rgba(255, 255, 255, 0.7)",
-                  fontStyle: "italic",
-                }}
+                Ver Proyectos
+              </button>
+              <button
+                onClick={() => scrollTo("contact")}
+                className="border-2 border-jdm-black text-jdm-black px-8 py-4 font-semibold tracking-wider uppercase text-sm hover:bg-jdm-black hover:text-jdm-cream transition-colors duration-300"
               >
-                &quot;Code like the night streets of Tokyo — fast and
-                precise.&quot;
-              </p>
+                Contáctame
+              </button>
             </div>
 
-            {/* Botón CTA */}
-            <div className="fade-in-up" style={{ animationDelay: "1s" }}>
-              <button
-                onClick={handleScrollToProjects}
-                className="btn-racing"
-                style={{
-                  fontSize: "clamp(1rem, 2.5vw, 1.2rem)",
-                  padding: "clamp(12px, 3vw, 16px) clamp(25px, 6vw, 40px)",
-                }}
-              >
-                <span>View My Work</span>
-                <i
-                  className="bi bi-arrow-right-short"
-                  style={{ fontSize: "1.5rem" }}
-                ></i>
-              </button>
+            {/* Stats */}
+            <div className="flex gap-12 mt-16 pt-8 border-t border-jdm-black/10">
+              <div>
+                <p className="text-3xl font-bold text-jdm-black">3+</p>
+                <p className="text-sm text-jdm-gray uppercase tracking-wider">
+                  Años Exp.
+                </p>
+              </div>
+              <div>
+                <p className="text-3xl font-bold text-jdm-black">3+</p>
+                <p className="text-sm text-jdm-gray uppercase tracking-wider">
+                  Apps en Producción
+                </p>
+              </div>
+              <div>
+                <p className="text-3xl font-bold text-jdm-black">60%</p>
+                <p className="text-sm text-jdm-gray uppercase tracking-wider">
+                  Complejidad Reducida
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Right - Image */}
+          <div className="relative hidden lg:block">
+            <div className="tech-border">
+              {/* Image header bar */}
+              <div className="bg-jdm-black text-jdm-cream px-4 py-2 flex justify-between items-center">
+                <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-jdm-red">
+                  AE86 // PROJECT_86
+                </span>
+                <span className="font-[var(--font-jp)] text-jdm-cream/40 text-[10px]">
+                  ハチロク・ガレージ
+                </span>
+              </div>
+              <Image
+                src="/hero-bg.jpg"
+                alt="JDM AE86 Cyberpunk"
+                width={600}
+                height={450}
+                className="w-full h-auto object-cover"
+                priority
+              />
+            </div>
+
+            {/* Decorative label below image */}
+            <div className="absolute -bottom-4 -right-4 bg-jdm-red text-jdm-cream px-4 py-2">
+              <span className="text-xs font-bold tracking-[0.2em] uppercase">
+                Est. 2023
+              </span>
             </div>
           </div>
         </div>
       </div>
-
-      {/* CSS interno para animación del cursor */}
-      <style>{`
-        @keyframes blink {
-          0%, 50% { opacity: 1; }
-          51%, 100% { opacity: 0; }
-        }
-      `}</style>
     </section>
   );
 }

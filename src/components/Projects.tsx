@@ -1,338 +1,142 @@
 "use client";
 
-interface Project {
-  id: string;
-  title: string;
-  description: string;
-  image: string;
-  technologies: string[];
-  liveUrl?: string;
-  githubUrl?: string;
-  featured: boolean;
+import { useEffect, useRef, useState } from "react";
+
+interface GitHubRepo {
+  id: number;
+  name: string;
+  description: string | null;
+  html_url: string;
+  homepage: string | null;
+  language: string | null;
+  stargazers_count: number;
+  forks_count: number;
+  topics: string[];
+  updated_at: string;
 }
 
-const projectsData: Project[] = [];
+const GITHUB_USERNAME = "MichaelNegrete16";
+
+const manualProjects = [
+  {
+    title: "FinAI",
+    description:
+      "App de finanzas personales con análisis financiero impulsado por IA — patrones de gasto, recomendaciones de inversión, seguimiento de presupuestos y metas de ahorro con sugerencias accionables.",
+    tech: ["Flutter", "Dart", "Supabase", "Groq AI", "Riverpod", "fl_chart"],
+  },
+  {
+    title: "Portal de Pagos Multi-Pasarela",
+    description:
+      "Flujo de pago renderizado en servidor manejando múltiples proveedores con polling en tiempo real, validación dinámica, modales informativos y restricciones inteligentes de pasarela. Sirve tráfico real en producción.",
+    tech: ["React", "TypeScript", "SSR", "REST APIs", "Vanilla JS"],
+  },
+];
 
 export default function Projects() {
-  const featuredProjects = projectsData.filter((project) => project.featured);
-  const otherProjects = projectsData.filter((project) => !project.featured);
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [repos, setRepos] = useState<GitHubRepo[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setIsVisible(true);
+      },
+      { threshold: 0.1 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    fetch("/api/github")
+      .then((res) => (res.ok ? res.json() : []))
+      .then((data: GitHubRepo[]) => setRepos(data))
+      .catch(() => setRepos([]))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const langColor: Record<string, string> = {
+    TypeScript: "#3178C6",
+    JavaScript: "#F7DF1E",
+    Dart: "#00B4AB",
+    Python: "#3776AB",
+    HTML: "#E34C26",
+    CSS: "#563D7C",
+    Ruby: "#CC342D",
+  };
 
   return (
-    <section id="projects" className="py-5">
-      <div className="container">
-        <div className="row">
-          <div className="col-12 text-center mb-5">
-            <h2 className="section-title neon-text arcade-text">
-              Featured Projects
-            </h2>
-            <div className="section-divider"></div>
-            <p
-              className="tech-text mb-0"
-              style={{
-                fontSize: "1.2rem",
-                color: "rgba(255, 255, 255, 0.8)",
-                maxWidth: "700px",
-                margin: "0 auto",
-              }}
-            >
-              Una selección de mis mejores trabajos que demuestran mi expertise
-              en desarrollo web moderno
-            </p>
-          </div>
+    <section
+      id="projects"
+      ref={sectionRef}
+      className="py-24 md:py-32 relative grid-bg"
+    >
+      <div className="max-w-7xl mx-auto px-6">
+        {/* Section Header */}
+        <div className="flex items-center gap-4 mb-16">
+          <div className="w-16 h-[2px] bg-jdm-red" />
+          <h2 className="text-sm font-bold tracking-[0.3em] uppercase text-jdm-gray">
+            03 &mdash; Proyectos Destacados
+          </h2>
         </div>
 
-        {/* Proyectos destacados */}
-        <div className="row g-4 mb-5">
-          {featuredProjects.map((project, index) => (
-            <div key={project.id} className="col-lg-4 col-md-6">
-              <div
-                className="project-card fade-in-up"
-                style={{ animationDelay: `${index * 0.2}s` }}
-              >
-                {/* Imagen del proyecto */}
-                <div className="project-image">
-                  <div
-                    className="w-100 h-100 d-flex align-items-center justify-content-center"
-                    style={{
-                      background: "var(--gradient-tokyo)",
-                      minHeight: "200px",
-                    }}
-                  >
-                    <i
-                      className="bi bi-globe neon-text"
-                      style={{ fontSize: "4rem" }}
-                    ></i>
-                  </div>
+        <h3
+          className={`text-4xl md:text-5xl font-bold text-jdm-black mb-16 leading-tight ${
+            isVisible ? "animate-fade-in-up" : "opacity-0"
+          }`}
+        >
+          Mis
+          <br />
+          <span className="text-jdm-red">Proyectos</span>
+        </h3>
 
-                  {/* Overlay con enlaces */}
-                  <div className="project-overlay">
-                    <div className="d-flex gap-3">
-                      {project.liveUrl && (
-                        <a
-                          href={project.liveUrl}
-                          className="btn btn-racing"
-                          style={{
-                            padding: "10px 20px",
-                            fontSize: "0.9rem",
-                          }}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <i className="bi bi-eye"></i>
-                          <span>Live Demo</span>
-                        </a>
-                      )}
-                      {project.githubUrl && (
-                        <a
-                          href={project.githubUrl}
-                          className="social-link"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{
-                            width: "45px",
-                            height: "45px",
-                          }}
-                        >
-                          <i className="bi bi-github"></i>
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Contenido del proyecto */}
-                <div className="p-4">
-                  <h4
-                    className="mb-3 arcade-text"
-                    style={{
-                      color: "var(--bright-cyan)",
-                      textShadow: "var(--neon-glow-cyan)",
-                      fontSize: "1.2rem",
-                    }}
-                  >
-                    {project.title}
-                  </h4>
-
-                  <p
-                    className="tech-text mb-3"
-                    style={{
-                      color: "rgba(255, 255, 255, 0.8)",
-                      lineHeight: "1.6",
-                      fontSize: "0.95rem",
-                    }}
-                  >
-                    {project.description}
-                  </p>
-
-                  {/* Tecnologías */}
-                  <div className="d-flex flex-wrap gap-2">
-                    {project.technologies.map((tech) => (
-                      <span
-                        key={tech}
-                        className="tech-tag"
-                        style={{
-                          fontSize: "0.8rem",
-                          padding: "4px 12px",
-                        }}
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Separador con efecto */}
-        <div className="row mb-5">
-          <div className="col-12">
+        {/* Featured Projects (from CV) */}
+        <div className="grid md:grid-cols-2 gap-8 mb-16">
+          {manualProjects.map((project, idx) => (
             <div
-              className="mx-auto"
-              style={{
-                width: "200px",
-                height: "2px",
-                background: "var(--gradient-cyber)",
-                position: "relative",
-              }}
+              key={project.title}
+              className={`project-card-jdm tech-border bg-white/70 backdrop-blur-sm ${
+                isVisible ? "animate-fade-in-up" : "opacity-0"
+              }`}
+              style={{ animationDelay: `${idx * 0.15}s` }}
             >
-              <div
-                className="position-absolute top-50 start-50 translate-middle"
-                style={{
-                  width: "20px",
-                  height: "20px",
-                  background: "var(--electric-purple)",
-                  borderRadius: "50%",
-                  boxShadow: "var(--neon-glow-purple)",
-                }}
-              />
-            </div>
-          </div>
-        </div>
+              {/* Card Header */}
+              <div className="bg-jdm-black text-jdm-cream px-6 py-3 flex justify-between items-center">
+                <span className="text-xs font-bold tracking-[0.2em] uppercase text-jdm-red">
+                  Destacado
+                </span>
+                <span className="font-[var(--font-jp)] text-jdm-cream/50 text-xs">
+                  プロジェクト
+                </span>
+              </div>
 
-        {/* Otros proyectos */}
-        <div className="row mb-4">
-          <div className="col-12 text-center">
-            <h3
-              className="arcade-text"
-              style={{
-                color: "var(--electric-purple)",
-                textShadow: "var(--neon-glow-purple)",
-                fontSize: "1.8rem",
-                marginBottom: "3rem",
-              }}
-            >
-              Other Notable Projects
-            </h3>
-          </div>
-        </div>
-
-        <div className="row g-3">
-          {otherProjects.map((project, index) => (
-            <div key={project.id} className="col-lg-6 col-md-6">
-              <div
-                className="glass-effect p-4 rounded fade-in-up"
-                style={{
-                  animationDelay: `${(index + 3) * 0.1}s`,
-                  border: "1px solid rgba(255, 255, 255, 0.1)",
-                  transition: "var(--transition-glow)",
-                  height: "100%",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateY(-5px)";
-                  e.currentTarget.style.boxShadow = "var(--neon-glow-purple)";
-                  e.currentTarget.style.borderColor = "var(--electric-purple)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "";
-                  e.currentTarget.style.boxShadow = "";
-                  e.currentTarget.style.borderColor =
-                    "rgba(255, 255, 255, 0.1)";
-                }}
-              >
-                <div className="d-flex justify-content-between align-items-start mb-3">
-                  <h5
-                    className="tech-text mb-0"
-                    style={{
-                      color: "var(--bright-cyan)",
-                      fontWeight: "700",
-                    }}
-                  >
-                    {project.title}
-                  </h5>
-                  <div className="d-flex gap-2">
-                    {project.githubUrl && (
-                      <a
-                        href={project.githubUrl}
-                        className="text-decoration-none"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                          color: "var(--bright-cyan)",
-                          fontSize: "1.2rem",
-                          transition: "var(--transition-smooth)",
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.color = "var(--neon-red)";
-                          e.currentTarget.style.textShadow =
-                            "var(--neon-glow-red)";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.color = "var(--bright-cyan)";
-                          e.currentTarget.style.textShadow = "";
-                        }}
-                      >
-                        <i className="bi bi-github"></i>
-                      </a>
-                    )}
-                    {project.liveUrl && (
-                      <a
-                        href={project.liveUrl}
-                        className="text-decoration-none"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                          color: "var(--bright-cyan)",
-                          fontSize: "1.2rem",
-                          transition: "var(--transition-smooth)",
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.color = "var(--neon-red)";
-                          e.currentTarget.style.textShadow =
-                            "var(--neon-glow-red)";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.color = "var(--bright-cyan)";
-                          e.currentTarget.style.textShadow = "";
-                        }}
-                      >
-                        <i className="bi bi-box-arrow-up-right"></i>
-                      </a>
-                    )}
-                  </div>
-                </div>
-
-                <p
-                  className="tech-text mb-3"
-                  style={{
-                    color: "rgba(255, 255, 255, 0.7)",
-                    fontSize: "0.9rem",
-                    lineHeight: "1.5",
-                  }}
-                >
+              <div className="p-6">
+                <h4 className="text-2xl font-bold text-jdm-black mb-3">
+                  {project.title}
+                </h4>
+                <p className="text-jdm-black/60 mb-6 leading-relaxed">
                   {project.description}
                 </p>
-
-                <div className="d-flex flex-wrap gap-1">
-                  {project.technologies.slice(0, 4).map((tech) => (
+                <div className="flex flex-wrap gap-2">
+                  {project.tech.map((t) => (
                     <span
-                      key={tech}
-                      className="tech-tag"
-                      style={{
-                        fontSize: "0.75rem",
-                        padding: "3px 8px",
-                      }}
+                      key={t}
+                      className="px-3 py-1 text-xs font-semibold border border-jdm-black/20 text-jdm-black/70 uppercase tracking-wider"
                     >
-                      {tech}
+                      {t}
                     </span>
                   ))}
-                  {project.technologies.length > 4 && (
-                    <span
-                      className="tech-tag"
-                      style={{
-                        fontSize: "0.75rem",
-                        padding: "3px 8px",
-                        color: "var(--electric-purple)",
-                      }}
-                    >
-                      +{project.technologies.length - 4}
-                    </span>
-                  )}
                 </div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* CTA para ver más proyectos */}
-        <div className="row mt-5">
-          <div className="col-12 text-center">
-            <a
-              href="https://github.com/MichaelNegrete16"
-              className="btn-racing"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                fontSize: "1.1rem",
-                padding: "15px 35px",
-              }}
-            >
-              <i className="bi bi-github"></i>
-              <span>Ver Más Proyectos en GitHub</span>
-            </a>
-          </div>
-        </div>
+        {/* GitHub Repos - Oculto temporalmente
+        TODO: Descomentar cuando los repos estén listos
+        */}
       </div>
     </section>
   );
